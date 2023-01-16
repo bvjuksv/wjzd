@@ -8,13 +8,15 @@ m = 200                                     # sample length（样本大小）
 # generate matrix X
 # 构建特征矩阵  创建一个m * 2的数组X，第一列全为1，第二列为1~m
 X0 = np.ones((m, 1))                         #创建一个全为1的 m * 1 的数组
-X1 = np.arange(0, m).reshape(m, 1)         #创建一个从1到m+1（不包括m+1）的数组，再通过 reshape(m, 1) 改变数组的形状为 m * 1
+X1 = np.arange(0, m).reshape(m, 1)         #创建一个从1到m+1（不包括m+1）的数组，再通过 reshape(m, 1) 改变数组的形状为 m * 1。
 X = np.hstack((X0, X1))                      #将X0和X1数组在列上进行水平拼接，得到一个 m * 2 的数组，X.
+
+
 
 # matrix y
 y = np.array(data).reshape(m,1)              #将列表data转换成numpy数组,并数组的形状为 m * 1
 
-alpha = 0.0001
+alpha = 0.01
 # alpha=α  theta=θ
 # 定义一个计算代价函数（误差平方和），用来评估线性回归模型的拟合程度
 # theta是模型参数，是一个 n * 1 的列向量；X是特征矩阵，是一个 m * n 的矩阵；y是目标变量，它是一个 m * 1 的列向量。
@@ -35,13 +37,12 @@ def gradient_descent(X, y, alpha):
     theta = np.array([1, 1]).reshape(2, 1)               #创建一个初始的 theta 参数矩阵，并将其形状设置为 2 * 1 的矩阵。
     gradient = gradient_function(theta, X, y)            #调用 gradient_function() 函数来计算当前 theta 参数下的梯度
     while not np.all(np.absolute(gradient) <= 1e-5):     #如果所有元素的绝对值都小于等于1e-5，则终止循环
-        theta = theta - alpha * gradient                 #更新 theta 参数矩阵，alpha 是学习率=0.0001，gradient 是梯度
+        theta = theta - alpha * gradient                 #更新 theta 参数矩阵，alpha 是学习率=0.01，gradient 是梯度
         gradient = gradient_function(theta, X, y)        #重新计算梯度
     return theta                                         #返回最终得到的 theta 参数矩阵
 
 [theta0, theta1] = gradient_descent(X, y, alpha)
 
-print(theta0, theta1)
 
 plt.figure()                                    #plt.figure(figsize=(width, height)): 创建一个新的图表，并设置图表的大小
 plt.scatter(X1,y)                               #绘制散点图
